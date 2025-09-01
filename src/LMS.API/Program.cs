@@ -1,4 +1,7 @@
 
+using LMS.API.Data;
+using Microsoft.EntityFrameworkCore;
+
 namespace LMS.API
 {
     public class Program
@@ -8,6 +11,13 @@ namespace LMS.API
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
+
+            //read connection string
+            var connectionString = builder.Configuration.GetConnectionString("DatabaseConnection");
+            // Specify MySQL server version (adjust as per your DB)
+            var serverVersion = new MySqlServerVersion(new Version(8, 0, 43));
+            //add dbcontext
+            builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseMySql(connectionString, serverVersion));
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
