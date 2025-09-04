@@ -23,10 +23,8 @@ namespace LMS.API.Controllers
         {
             if (await _context.Users.AnyAsync(u => u.Email == registerRequest.Email))
                 return BadRequest(new { message = "Email already exists" });
-
             // Hash the password before saving
             var passwordHash = HashPassword(registerRequest.Password);
-
             var user = new User
             {
                 Name = registerRequest.Name,
@@ -35,14 +33,10 @@ namespace LMS.API.Controllers
                 Role = registerRequest.Role,
                 CreateAt = DateTime.Now
             };
-
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
-
             return Ok(new { message = "User registered successfully" });
-
         }
-
         // Simple password hashing using SHA256
         private string HashPassword(string password)
         {
@@ -52,26 +46,22 @@ namespace LMS.API.Controllers
             return Convert.ToBase64String(hash);
         }
 
-
         [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] LoginRequest loginRequest)
+        public async Task<IActionResult> Login([FromBody] UserLoginDto userLoginDto)
         {
             // Checks if user exists by email
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == loginRequest.Email);
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == userLoginDto.Email);
             if (user == null)
             {
                 return Unauthorized(new { message = "Invalid email or password" });
             }                
-
             // Hash the entered password
-            var hashedInputPassword = HashPassword(loginRequest.Password);
-
+            var hashedInputPassword = HashPassword(userLoginDto.Password);
             // Compare with stored hash
             if (user.PasswordHash != hashedInputPassword)
             {
                 return Unauthorized(new { message = "Invalid email or password" });
             }        
-
             // Success
             return Ok(new { message = "Login Successful" });
         }

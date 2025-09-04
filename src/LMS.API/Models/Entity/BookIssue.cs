@@ -27,6 +27,7 @@ namespace LMS.API.Models.Entity
         public DateTime? ReturnDate { get; set; }  
 
         [Column(TypeName = "decimal(10,2)")]
-        public decimal FineAmount { get; set; } = 0;  
+        public decimal FineAmount { get; set; } = 0;
+      
     }
 }
