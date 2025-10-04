@@ -24,7 +24,7 @@ namespace LMS.API.Controllers
             //var books = await _context.Books.Select(b => new GetAllBookDto
             //{
             //    BookTitle = b.BookTitle,
-            //    Author = b.Author,
+            //    Author = b.Author,  
             //    Category = b.Category,
             //    ISBN = b.ISBN,
             //    TotalCopies = b.TotalCopies,
